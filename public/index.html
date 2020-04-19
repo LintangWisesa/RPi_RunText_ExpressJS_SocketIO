@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lintang RPi RunText</title>
+    
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+   
+    <!-- iconify -->
+    <script src="https://code.iconify.design/1/1.0.3/iconify.min.js"></script>
+
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/4a822b1d6a.js" crossorigin="anonymous"></script>
+
+    <!-- style & web socket -->
+    <link href="/styles.css" rel="stylesheet"/>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js'></script>
+
+</head>
+<body>
+    <h1 class="mt-4">
+        <i class="iconify" data-icon="logos-raspberry-pi" data-inline="true"></i>
+        Controlled Running Text
+    </h1>
+    <b>Raspberry Pi + Express.js + Socket.io</b>
+
+    <!-- Button trigger modal -->
+    <br>
+    <button type="button" class="mt-3 btn-sm btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">
+        <i class="fas fa-cog"></i>&nbsp;
+        Settings
+    </button>
+  
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+                <i class="iconify" data-icon="logos-raspberry-pi" data-inline="true"></i>
+                Settings
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="row">
+                    <!-- display text -->
+                    <div class="col-sm-9">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <i class="fas fa-quote-right"></i>
+                              </div>
+                            </div>
+                            <input id="message" class="form-control form-control-lg" 
+                            type="text" placeholder="Write text here..."/>    
+                        </div>
+                    </div>
+                    <!-- text color -->
+                    <div class="col-sm-3">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <i class="fas fa-paint-brush"></i>
+                              </div>
+                            </div>
+                            <input id="txtcolor" type="color" class="form-control form-control-lg" 
+                            value="#FFFFFF">    
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- font type selection -->
+                    <div class="col-sm-5">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <i class="fas fa-font"></i>
+                              </div>
+                            </div>
+                            <select id="font" class="form-control form-control-lg">
+                                <option value="Arial">Arial</option>
+                                <option value="Cambria">Cambria</option>
+                                <option value="Calibri">Calibri</option>
+                                <option value="Courier">Courier</option>
+                                <option value="Impact">Impact</option>
+                                <option value="Monospace">Monospace</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                            </select>
+                            <!-- <p style="font-family:"></p>       -->
+                        </div>
+                    </div>
+                    <!-- speed settings -->
+                    <div class="col-sm-4">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <i class="fas fa-tachometer-alt"></i>
+                              </div>
+                            </div>
+                            <select id="speed" class="form-control form-control-lg">
+                                <option value="13">Medium</option>
+                                <option value="5">Slow</option>
+                                <option value="20">Fast</option>
+                            </select>    
+                        </div>
+                    </div>
+                    <!-- background color settings -->
+                    <div class="col-sm-3">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <i class="fas fa-paint-roller"></i>
+                              </div>
+                            </div>
+                            <input id="bgcolor" type="color" class="form-control form-control-lg" 
+                            value="#000000">    
+                        </div>
+                    </div>
+                </div>
+                <div id="feedback"></div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="send" type="button" class="btn btn-success">
+                    <i class="fas fa-check-circle"></i>&nbsp;
+                    Apply
+                </button>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <!-- scrollamount = 5 slow, 13 medium, 20 fast -->
+    <div id="output">
+        <marquee id="text" scrollamount="13" style="font-size: 250px;">
+            Raspberry Pi Running Text
+        </marquee>
+    </div>
+    
+    <script src='/chat.js'></script>
+</body>
+</html>
