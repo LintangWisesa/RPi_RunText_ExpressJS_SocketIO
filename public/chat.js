@@ -1,8 +1,8 @@
 // socket io in front end
 
 // Make connection
-var socket = io.connect('http://localhost:1234/')
-// var socket = io.connect('http://192.168.43.163:1234')
+// var socket = io.connect('http://localhost:1234/')
+var socket = io.connect('http://192.168.43.163:1234') // change with your RPi IP address
 
 // Get value from html
 var message = document.getElementById('message')
@@ -26,14 +26,13 @@ send.addEventListener('click', ()=>{
     })
 })
 
-// emit keypress input events: "Andi is typing..."
+// emit keypress input events: "Lintang is typing..."
 message.addEventListener('keypress', ()=>{
     socket.emit('typing')
 })
 
 // listen for events
 socket.on('chat', (data)=>{
-    // output.innerHTML += `<p><strong>${data.handle}:</strong>&nbsp;&nbsp;${data.message}</p>`
     output.innerHTML = `
     <marquee scrollamount=${data.speed} 
     style="font-size:250px; font-family:${data.font}; color:${data.txtcolor}; background-color:${data.bgcolor}">
@@ -44,6 +43,5 @@ socket.on('chat', (data)=>{
 })
 
 socket.on('typing', (data)=>{
-    // feedback.innerHTML = `<i>${data} is typing...</i>`
     feedback.innerHTML = `<i>User is typing...</i>`
 })

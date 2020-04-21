@@ -1,4 +1,3 @@
-// npm i express socket.io
 var express = require('express')
 var socket = require('socket.io')
 
